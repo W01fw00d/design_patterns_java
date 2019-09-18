@@ -1,17 +1,21 @@
 package prototype_pattern;
 
-class Point
+import java.io.Serializable;
+
+import org.apache.commons.lang3.SerializationUtils;
+
+class Point implements Serializable
 {
   public int x, y;
   
-  public Point(int x, int y)
+  public Point(int x, int y) 
   {
     this.x = x;
     this.y = y;
   }
 }
 
-class Line
+class Line implements Serializable
 {
   public Point start, end;
   
@@ -23,10 +27,7 @@ class Line
 
   public Line deepCopy()
   {
-    return new Line(
-    		new Point(this.start.x, this.start.y),
-    		new Point(this.end.x, this.end.y)
-    );
+    return SerializationUtils.roundtrip(this);
   }
 }
 
