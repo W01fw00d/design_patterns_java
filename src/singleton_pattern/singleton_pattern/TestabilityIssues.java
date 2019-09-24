@@ -15,7 +15,12 @@ import static org.junit.Assert.assertEquals;
 
 import com.google.common.collect.Iterables;
 
-class SingletonDatabase
+interface Database
+{
+	int getPopulation(String name);
+}
+
+class SingletonDatabase implements Database
 {
 	private Dictionary<String, Integer> capitals
 		= new Hashtable<>();
@@ -77,9 +82,47 @@ class SingletonRecordFinder
 	}
 }
 
+// Let's depend on abstraction instead of implementation: dependency injection
+class ConfigurableRecordFinder
+{
+	private Database database;
+
+	public ConfigurableRecordFinder(Database database) {
+		this.database = database;
+	}
+	
+	public int getTotalPopulation(List<String> names)
+	{
+		int result = 0;
+		for (String name : names)
+			result += database.getPopulation(name);
+
+		return result;
+	}
+}
+
+class DummyDatabase implements Database
+{
+	private Dictionary<String, Integer>
+		data = new Hashtable<>();
+
+	public DummyDatabase() {
+		data.put("alpha", 1);
+		data.put("beta", 1);
+		data.put("gamma", 1);
+	}
+
+	@Override
+	public int getPopulation(String name)
+	{
+		return data.get(name);
+	}
+}
+
 class Tests
 {
-	@Test
+	//This is an integration test, it depends on data on the real database and its implementation
+	@Test 
 	public void singletonTotalPopulationTest()
 	{
 		SingletonRecordFinder rf = new SingletonRecordFinder();
@@ -88,5 +131,16 @@ class Tests
 		names.add("Barcelona");
 		int tp = rf.getTotalPopulation(names);
 		assertEquals(333333333+222222222, tp);
+	}
+	// Unit test
+	@Test 
+	public void dependentPopulationTest()
+	{
+		DummyDatabase db = new DummyDatabase();
+		ConfigurableRecordFinder rf = new ConfigurableRecordFinder(db);
+		ArrayList<String> names = new ArrayList<String>();
+		names.add("alpha");
+		names.add("gamma");
+		assertEquals(2, rf.getTotalPopulation(names));
 	}
 }
