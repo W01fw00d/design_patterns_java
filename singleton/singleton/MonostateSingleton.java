@@ -1,4 +1,4 @@
-package singleton_pattern;
+package singleton;
 
 // This pattern is confusing, because this class doesn't indicate anyway that is indeed a singleton
 // So, you can be making instances without being aware of that they are always shared

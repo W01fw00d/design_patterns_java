@@ -1,4 +1,4 @@
-package singleton_pattern;
+package singleton;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

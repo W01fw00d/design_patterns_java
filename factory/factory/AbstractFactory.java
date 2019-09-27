@@ -1,4 +1,4 @@
-package factory_pattern;
+package factory;
 
 import javafx.util.Pair;
 

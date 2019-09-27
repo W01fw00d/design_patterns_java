@@ -1,4 +1,4 @@
-package design_patterns_java;
+package builder;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package singleton_pattern;
+package singleton;
 
 // This example avoids the problem with synchronization - it's thread safe
 class InnerStaticSingleton {

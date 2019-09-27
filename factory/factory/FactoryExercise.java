@@ -1,4 +1,4 @@
-package factory_pattern;
+package factory;
 
 class Person
 {

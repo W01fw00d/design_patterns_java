@@ -1,4 +1,4 @@
-package design_patterns_course;
+package solid_principles;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package singleton_pattern;
+package singleton;
 
 public class LazySingleton
 {

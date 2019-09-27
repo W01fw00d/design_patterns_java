@@ -1,4 +1,4 @@
-package prototype_pattern;
+package prototype;
 
 import java.io.Serializable;
 
