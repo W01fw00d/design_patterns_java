@@ -119,7 +119,7 @@ class DummyDatabase implements Database
 	}
 }
 
-class Tests
+class TestabilityIssues
 {
 	//This is an integration test, it depends on data on the real database and its implementation
 	@Test 
