@@ -15,7 +15,13 @@ class Node<T> {
 		this.left = left;
 		this.right = right;
 
-		left.parent = right.parent = this;
+		if (this.left != null) {
+			left.parent = this;
+		}
+		
+		if (this.right != null) {
+			right.parent = this;
+		}
 	}
 	
 	public Iterator<Node<T>> preOrder()
@@ -27,11 +33,11 @@ class Node<T> {
 }
 
 class PreOrderIterator<T> implements Iterator<T> {
-	private Node<T> current, root;
+	private Node<T> current;
 	private boolean yieldedStart;
 
 	public PreOrderIterator(Node<T> root) {
-		this.root = current = root;
+		this.current = root;
 	}
 
 	private boolean hasRightmostParent(Node<T> node) {
@@ -93,13 +99,25 @@ class Demo {
 		);
 		
 		// https://en.wikipedia.org/wiki/Tree_traversal#Pre-order
-//		Node<Character> root_complex = new Node<>(
-//				'F',
-//				new Node<>('B', new Node<>('A'), new Node<>('D', new Node<>('C'), new Node<>('E'))),
-//				new Node<>('G', null, new Node<>('I', new Node<>('H'), null))
-//		);
+		Node<Character> root_complex = new Node<>(
+				'F',
+				new Node<>('B',
+						new Node<>('A'),
+						new Node<>('D',
+								new Node<>('C'),
+								new Node<>('E')
+						)
+				),
+				new Node<>('G',
+						null,
+						new Node<>('I',
+								null,
+								new Node<>('H')
+						)
+				)
+		);
 
-		Iterator<Node<Character>> iterator = root.preOrder();
+		Iterator<Node<Character>> iterator = root_complex.preOrder();
 		
 		while (iterator.hasNext()) {
 			System.out.print("" + iterator.next() + ",");
