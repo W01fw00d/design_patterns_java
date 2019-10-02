@@ -39,21 +39,11 @@ class Event<TArgs> {
 	}
 }
 
-class RatAddedEventArgs
+class RatEventArgs
 {
   public Object source;
 
-  public RatAddedEventArgs(Object source)
-  {
-    this.source = source;
-  }
-}
-
-class RatRemovedEventArgs
-{
-  public Object source;
-
-  public RatRemovedEventArgs(Object source)
+  public RatEventArgs(Object source)
   {
     this.source = source;
   }
@@ -61,18 +51,14 @@ class RatRemovedEventArgs
 
 class Game {
 	private ArrayList<Rat> rats = new ArrayList<Rat>();
-	public Event<RatAddedEventArgs> ratAdded = new Event<>();
-	public Event<RatRemovedEventArgs> ratRemoved = new Event<>();
-	
-	Game() {
-		
-	}
+	public Event<RatEventArgs> ratAdded = new Event<>();
+	public Event<RatEventArgs> ratRemoved = new Event<>();
 	
 	public void addRat(Rat rat) {
 		rats.add(rat);
 		rat.setAttack(rats.size());
 
-		ratAdded.fire(new RatAddedEventArgs(this));
+		ratAdded.fire(new RatEventArgs(this));
 
 		rat.rat_added_sub = this.ratAdded.addHandler(rat_args -> rat.ratAdded(rat_args));
 		rat.rat_removed_sub = this.ratRemoved.addHandler(rat_args -> rat.ratRemoved(rat_args));		
@@ -81,7 +67,7 @@ class Game {
 	public void removeRat(Rat rat) {
 		rats.remove(rat);
 
-		ratRemoved.fire(new RatRemovedEventArgs(rat));
+		ratRemoved.fire(new RatEventArgs(rat));
 	}
 }
 
@@ -89,8 +75,8 @@ class Rat implements Closeable {
 	private Game game;
 	public int attack = 1;
 	
-	public Event<RatAddedEventArgs>.Subscription rat_added_sub;
-	public Event<RatRemovedEventArgs>.Subscription rat_removed_sub;		
+	public Event<RatEventArgs>.Subscription rat_added_sub;
+	public Event<RatEventArgs>.Subscription rat_removed_sub;		
 
 	public Rat(Game game) {
 		this.game = game;
@@ -101,7 +87,7 @@ class Rat implements Closeable {
 		this.attack = attack;
 	}
 	
-	public void ratAdded(RatAddedEventArgs rat_args) {
+	public void ratAdded(RatEventArgs rat_args) {
 		System.out.println("Rat added!");
 		if (!rat_args.source.equals(this)) {
 			System.out.println("It's not me, so Attack augmented!");
@@ -109,7 +95,7 @@ class Rat implements Closeable {
 		}
 	}
 	
-	public void ratRemoved(RatRemovedEventArgs rat_args) {
+	public void ratRemoved(RatEventArgs rat_args) {
 		System.out.println("Rat removed!");
 		if (!rat_args.source.equals(this)) {
 			System.out.println("It's not me, so Attack diminished!");
